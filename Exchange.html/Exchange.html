@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Exchange</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>✨ Luxury Exchange ✨</h1>
+        <p>Trade Premium Items with Elegance</p>
+        <p>
+            Current User: <span id="userIcon">👩‍💼</span> 
+            <span id="userName">Sarah Johnson</span> 
+            ⭐ <span id="userRating">4.8</span>
+        </p>
+        <button onclick="switchUser()">Switch User</button>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats" id="statsBar"></div>
+
+    <!-- SEARCH -->
+    <div class="controls">
+        <input type="text" id="searchInput" placeholder="Search items..." onkeyup="renderAll()">
+        <select id="sortSelect" onchange="renderAll()">
+            <option value="date">Latest First</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="rating">Highest Rated</option>
+        </select>
+    </div>
+
+    <!-- CATEGORIES -->
+    <div class="categories" id="categoryBar"></div>
+
+    <!-- EXCHANGE SUMMARY -->
+    <div class="summary" id="summaryBar">
+        <p id="summaryText"></p>
+        <button onclick="doExchange()">📋 Exchange</button>
+    </div>
+
+    <!-- TWO COLUMNS -->
+    <div class="columns">
+        <div class="column">
+            <h2 id="user1Title">👩‍💼 Sarah Johnson's Items</h2>
+            <div id="user1Items" class="items-grid"></div>
+        </div>
+        <div class="column">
+            <h2 id="user2Title">👨‍💼 Michael Chen's Items</h2>
+            <div id="user2Items" class="items-grid"></div>
+        </div>
+    </div>
+
+    <script src="Exch_Portal.js"></script>
+</body>
+</html>
