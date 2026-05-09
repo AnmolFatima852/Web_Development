@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LUXE MART — Premium Shopping</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Animated background -->
+<div id="bg-orbs">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+</div>
+
+<!-- Toast container -->
+<div id="toast-container"></div>
+
+<!-- Cart overlay -->
+<div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+<nav id="navbar">
+  <a class="brand" href="#" onclick="showPage('shop')">
+    <span class="brand-icon">🛍️</span>
+    <span class="brand-l">LUXE</span><span class="brand-r"> MART</span>
+  </a>
+
+  <button class="hamburger" id="hamburger" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="nav-links" id="nav-links">
+    <button class="nav-btn" onclick="showPage('shop');closeNav()"> Shop</button>
+    <a href="about.html" class="nav-btn" onclick="closeNav()"> About</a>
+    <button class="nav-btn" id="account-btn" onclick="openAuthModal();closeNav()"> Account</button>
+    <span id="user-greet" class="hidden" style="font-size:13px;font-weight:600;color:var(--text2)"></span>
+    <button class="nav-btn hidden" id="logout-btn" onclick="doLogout();closeNav()">Logout</button>
+    <a href="admin_login.php" class="nav-btn" id="admin-nav-btn">⚙️ Admin</a>
+    <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle theme">
+      <span class="theme-icons"><span>🌙</span><span>☀️</span></span>
+    </button>
+    <button class="cart-nav-btn" onclick="openCart()">
+      🛒 Cart <span class="cart-badge" id="cart-badge">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- =====================================================
+     SHOP PAGE
+===================================================== -->
+<div id="page-shop">
+
+  <!-- Hero -->
+  <section id="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-badge"><span class="dot"></span> New Arrivals Every Week</div>
+    <h1 class="hero-title">Shop <span class="hl">Premium</span><br>Products <span class="hl2">Online</span></h1>
+    <p class="hero-sub">Curated deals, real-time inventory — the ultimate shopping experience for everyone.</p>
+    <div class="hero-btns">
+      <button class="btn btn-primary" onclick="scrollToShop()">🛍️ Shop Now</button>
+      <button class="btn btn-secondary" onclick="openAuthModal()">🔑 Login / Register</button>
+      <button class="btn btn-secondary" onclick="scrollToShop()">👤 Shop as Guest</button>
+    </div>
+  </section>
+
+  <!-- Ticker -->
+  <div class="ticker-wrap">
+    <div class="ticker-track">
+      <span class="ticker-item">🔥 Flash Sale — Up to 50% OFF</span>
+      <span class="ticker-item">⚡ Free Shipping on orders over Rs 5,000</span>
+      <span class="ticker-item">💎 New Arrivals Just Landed</span>
+      <span class="ticker-item">🎁 Gift Wrapping Available</span>
+      <span class="ticker-item">🚚 Same-Day Delivery in Select Areas</span>
+      <span class="ticker-item">🔥 Flash Sale — Up to 50% OFF</span>
+      <span class="ticker-item">⚡ Free Shipping on orders over Rs 5,000</span>
+      <span class="ticker-item">💎 New Arrivals Just Landed</span>
+      <span class="ticker-item">🎁 Gift Wrapping Available</span>
+      <span class="ticker-item">🚚 Same-Day Delivery in Select Areas</span>
+    </div>
+  </div>
+
+  <!-- Products -->
+  <section id="shop-section">
+    <div class="section-header">
+      <h2 class="section-title">🛍️ Our <span>Products</span></h2>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" id="search-input" placeholder="Search products..." oninput="applyFilters()">
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-row" id="filter-row">
+      <button class="filter-chip active" onclick="setFilter('all',this)">All</button>
+    </div>
+
+    <div class="products-grid" id="products-grid"></div>
+  </section>
+
+  <!-- Subscribe -->
+  <section id="subscribe-section">
+    <h3 class="sub-title">📬 Stay in the <span style="color:var(--accent)">Loop</span></h3>
+    <p class="sub-sub">Get exclusive deals, early access, and new arrivals in your inbox.</p>
+    <div class="sub-form">
+      <input type="email" class="sub-input" id="sub-email" placeholder="your@email.com">
+      <button class="btn btn-primary" onclick="doSubscribe()">🚀 Subscribe</button>
+    </div>
+  </section>
+
+</div><!-- /page-shop -->
+
+<!-- =====================================================
+     ABOUT PAGE
+===================================================== -->
+<div id="page-about" class="hidden"></div>
+
+<!-- =====================================================
+     AUTH MODAL
+===================================================== -->
+<div class="modal-overlay" id="auth-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('auth-modal')">×</button>
+    <div class="tab-row">
+      <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">Login</button>
+      <button class="tab-btn" id="tab-register" onclick="switchTab('register')">Register</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="form-login">
+      <span class="modal-icon">👋</span>
+      <div class="modal-title">Welcome Back</div>
+      <div class="modal-sub">Login to your LUXE MART account</div>
+      <div class="form-group"><label>Email</label><input class="form-input" type="email" id="l-email" placeholder="you@email.com"></div>
+      <div class="form-group"><label>Password</label><input class="form-input" type="password" id="l-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="btn btn-primary btn-full" onclick="doLogin()" style="margin-top:4px">🔑 Login</button>
+      <div class="auth-switch">Don't have an account? <a onclick="switchTab('register')">Register</a></div>
+      <div class="auth-switch" style="margin-top:8px"><a href="admin_login.php" style="color:var(--text3);font-size:12px">⚙️ Admin Login</a></div>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="form-register" class="hidden">
+      <span class="modal-icon">🛒</span>
+      <div class="modal-title">Create Account</div>
+      <div class="modal-sub">Join LUXE MART — it's free!</div>
+      <div class="form-group"><label>Full Name</label><input class="form-input" type="text" id="r-name" placeholder="Your Name"></div>
+      <div class="form-group"><label>Email</label><input class="form-input" type="email" id="r-email" placeholder="you@email.com"></div>
+      <div class="form-row2">
+        <div class="form-group"><label>Password</label><input class="form-input" type="password" id="r-pass" placeholder="Min 6 chars"></div>
+        <div class="form-group"><label>Phone</label><input class="form-input" type="tel" id="r-phone" placeholder="+92 300 1234567"></div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="doRegister()">🚀 Create Account</button>
+      <div class="auth-switch">Already have an account? <a onclick="switchTab('login')">Login</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     CHECKOUT MODAL
+===================================================== -->
+<div class="modal-overlay" id="checkout-modal">
+  <div class="modal-box wide">
+    <button class="modal-close" onclick="closeModal('checkout-modal')">×</button>
+    <div class="modal-title">📦 Checkout</div>
+    <div class="modal-sub">Review your order and confirm</div>
+    <div id="checkout-items-list" style="margin-bottom:16px"></div>
+    <div style="background:var(--bg2);border-radius:12px;padding:16px;margin-bottom:18px" id="checkout-totals"></div>
+    <div class="modal-title" style="font-size:18px;margin:18px 0 14px">📋 Delivery Details</div>
+    <div class="form-row2">
+      <div class="form-group"><label>Full Name</label><input class="form-input" id="ch-name" placeholder="Your Name"></div>
+      <div class="form-group"><label>Email</label><input class="form-input" type="email" id="ch-email" placeholder="Email"></div>
+      <div class="form-group"><label>Phone</label><input class="form-input" type="tel" id="ch-phone" placeholder="Phone Number"></div>
+      <div class="form-group"><label>Address</label><input class="form-input" id="ch-addr" placeholder="Delivery Address"></div>
+    </div>
+    <div class="form-group"><label>Payment Method</label>
+      <select class="form-input form-select" id="ch-payment">
+        <option value="card">💳 Credit / Debit Card</option>
+        <option value="cash">💵 Cash on Delivery</option>
+        <option value="wallet">📱 Digital Wallet</option>
+      </select>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="confirmOrder()">✅ Place Order & Get Receipt</button>
+  </div>
+</div>
+
+<!-- =====================================================
+     RECEIPT MODAL
+===================================================== -->
+<div class="modal-overlay" id="receipt-modal">
+  <div class="modal-box wide">
+    <div class="receipt-card" id="receipt-content">
+      <div class="receipt-top">
+        <div class="receipt-check">✅</div>
+        <div class="receipt-title">Order Confirmed!</div>
+        <div class="receipt-meta" id="receipt-meta"></div>
+      </div>
+      <table class="receipt-table">
+        <thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>Total</th></tr></thead>
+        <tbody id="receipt-items"></tbody>
+      </table>
+      <div class="receipt-totals" id="receipt-totals"></div>
+      <p style="text-align:center;margin-top:16px;font-size:13px;color:var(--text2)">🎉 Thank you for shopping with LUXE MART!</p>
+    </div>
+    <div class="no-print" style="display:flex;gap:12px;margin-top:16px">
+      <button class="btn btn-primary btn-full" onclick="window.print()">🖨️ Print Receipt</button>
+      <button class="btn btn-secondary btn-full" onclick="closeModal('receipt-modal');showPage('shop')">🛍️ Continue Shopping</button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     CART SIDEBAR
+===================================================== -->
+<div id="cart-sidebar">
+  <div class="cart-header">
+    <span class="cart-title">🛒 Your Cart</span>
+    <button class="cart-close" onclick="closeCart()">×</button>
+  </div>
+  <div class="cart-items" id="cart-items-list"></div>
+  <div class="cart-footer" id="cart-footer" style="display:none">
+    <div id="cart-summary"></div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
+      <button class="btn btn-primary btn-full" onclick="openCheckout()">✅ Checkout</button>
+      <button class="btn btn-secondary btn-full" onclick="clearCart()">🗑️ Clear Cart</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:6px">🛍️ LUXE MART</div>
+  <p>© 2025 LUXE MART — Premium Shopping Experience. All rights reserved.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
